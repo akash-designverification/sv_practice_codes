@@ -1,0 +1,65 @@
+module class_TOP( );
+       class base;
+         logic [31:0] data1;
+         logic [31:0] data2;
+         logic [31:0] busx;
+         function void bus;
+           busx = data1 | data2;
+         endfunction
+	
+	function void disp;
+           $display("From Base Class :: busx OR = %h", busx);
+         endfunction
+       endclass : base
+
+       class ext extends base;
+         logic [31:0] data3; //add a new property
+         function new ( );
+           $display("Call base class method from extended class - super.disp");
+           super.disp;
+         endfunction
+         function void bus; //redefine function 'bus' of class 'base'
+             busx = data1 & data2 & data3;
+                             //data1,data2 inherited from class 'base'
+         endfunction
+         function void disp; //redefine function 'disp' of class 'base'
+           $display("From Extended Class :: busx AND = %h",busx);
+         endfunction
+       endclass : ext
+         initial begin
+           base b1;
+           ext e1;
+           b1 = new;
+           e1 = new;
+           b1.data1 = 32'h ffff_0000;
+           b1.data2 = 32'h 0000_ffff;
+           b1.bus;
+           b1.disp( );
+           e1.data1 = 32'h 0101_1111;
+           e1.data2 = 32'h 1111_ffff;
+           e1.data3 = 32'h 1010_1010;
+           e1.bus;
+           e1.disp( );
+         end
+       endmodule
+
+*/
+• New classes can be created based on existing class (inheritance).
+• The properties of base class are available/inherited in the extended class.
+• The inherited class is also called a subclass of the base (a.k.a. parent or 
+super) class.
+• The extended class may add new properties and methods or simply modify the 
+inherited methods and/or properties. It is not possible to change the characteris
+tics (e.g., data type) of a base class member, though the derived class can change 
+the value, of course.
+• The methods of base class can be overridden in the extended class.
+• The properties of base class can be redefined in the extended class (which means 
+that it hides the base class properties).
+• Overriding a method of base class in the extended class hides the method of the 
+base class. You can still access the base class method using the prefix “super” 
+(e.g., “super.<method>”).
+• SystemVerilog allows only single inheritance, meaning a subclass can extend 
+from only one parent class. In general, SystemVerilog does not support multiple 
+inheritance. However, note that SystemVerilog supports a limited form of mul
+tiple inheritance using interface classes.
+*/
