@@ -1,4 +1,4 @@
-
+//2-d_unpacked
 module tb;
 
 	  // 4 entries(rows) of 8 bits(columns) each
